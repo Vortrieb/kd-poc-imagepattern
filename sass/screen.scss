@@ -1,0 +1,9 @@
+@import "compass/reset";
+
+a, a:link {
+  transition: all 1s ease-out;
+}
+
+a:hover {
+  color: green;
+}
