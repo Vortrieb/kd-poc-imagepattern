@@ -1,7 +1,7 @@
 window.onload = function () {
 	"use strict";
 	var canvas = document.getElementById('canvas');
-	var frequency     = 15;
+	var frequency     = 6;
 	var angle         = 45;
 	var stepSize      = 1;
 	var linesPerFrame = 10;
@@ -81,9 +81,6 @@ window.onload = function () {
 			);
 
 			var brightness = p.brightness(pixel);
-			// if ( p.noise(this.position.x/100, this.position.y/100) > 0.5) {
-			// 	brightness /= 1.2;
-			// }
 
 			var size = p.map(
 				brightness,
@@ -127,9 +124,8 @@ window.onload = function () {
 				}
 			}
 			p.background(255);
-		};
+		}
 
-		var currentLine = 0;
 		p.draw = function () {
 			if (!run) {
 				return false;
@@ -139,14 +135,30 @@ window.onload = function () {
 				replaceWithImage();
 				p.noLoop();
 			} else {
+				randomized();
+			}
+		}
+
+		var currentLine = 0;
+		function sequential() {
+			for (var step = 0; step < linesPerFrame; step++) {
 				var lineCount = lines.length;
-				for (var step = 0; step < linesPerFrame; step++) {
-					if (currentLine < lineCount) {
-						lines[currentLine].run();
-						currentLine++;
-					}
+				if (currentLine < lineCount) {
+					lines[currentLine].run();
+					currentLine++;
 				}
 			}
+		}
+
+		function randomized() {
+				var lineCount;
+				var next;
+				for (var step = 0; step < linesPerFrame; step++) {
+					lineCount = lines.length;
+					next = Math.floor(Math.random()*lineCount);
+					lines[next].run();
+					lines.splice(next, 1);
+				}
 		}
 	});
 };
