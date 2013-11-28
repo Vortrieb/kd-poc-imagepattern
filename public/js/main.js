@@ -1,10 +1,10 @@
 window.onload = function () {
 	"use strict";
 	var canvas = document.getElementById('canvas');
-	var frequency     = 12;
+	var frequency     = 15;
 	var angle         = 45;
-	var stepSize      = 1.5;
-	var linesPerFrame = 12;
+	var stepSize      = 1;
+	var linesPerFrame = 10;
 	var minSize       = 0;
 	var maxSize       = 1;
 
@@ -33,7 +33,7 @@ window.onload = function () {
 				Math.sin(p.radians(opts.angle))
 			);
 			this.velocity.mult(stepSize);
-			this.location = new p.PVector(this.startX, this.startY);
+			this.position = new p.PVector(this.startX, this.startY);
 			this.finished = false;
 		}
 
@@ -62,7 +62,7 @@ window.onload = function () {
 		};
 
 		Line.prototype.step = function () {
-			if (this.location.x > p.width || this.location.y > p.height) {
+			if (this.position.x > p.width || this.position.y > p.height) {
 				if (!this.finished) {
 					this.finished = true;
 					finishedLines++;
@@ -70,18 +70,18 @@ window.onload = function () {
 				return false; // out of bounds
 			}
 
-			this.location.add(this.velocity);
+			this.position.add(this.velocity);
 			return true;
 		};
 
 		Line.prototype.draw = function () {
 			var pixel = image.get(
-				Math.floor(this.location.x),
-				Math.floor(this.location.y)
+				Math.floor(this.position.x),
+				Math.floor(this.position.y)
 			);
 
 			var brightness = p.brightness(pixel);
-			// if ( p.noise(this.location.x/100, this.location.y/100) > 0.5) {
+			// if ( p.noise(this.position.x/100, this.position.y/100) > 0.5) {
 			// 	brightness /= 1.2;
 			// }
 
@@ -95,8 +95,8 @@ window.onload = function () {
 			p.fill(brightness);
 			p.noStroke();
 			p.ellipse(
-				this.location.x,
-				this.location.y,
+				this.position.x,
+				this.position.y,
 				size, size
 			);
 		};
